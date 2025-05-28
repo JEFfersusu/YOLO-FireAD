@@ -1,0 +1,41 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+# YOLO-FireAD model config based on YOLOv8n with AIR + DPDF integration
+
+# Parameters
+nc: 80  # number of classes
+scales:  # model compound scaling constants
+  n: [0.33, 0.25, 1024]  # lightweight baseline
+
+# Backbone with DPDFBlock and AIRBlock
+backbone:
+  # [from, repeats, module, args]
+  - [-1, 1, DPDFBlock, [64]]   # 0-P1/2
+  - [-1, 1, DPDFBlock, [128]]  # 1-P2/4
+  - [-1, 3, AIRBlock, [128]]   # 2
+  - [-1, 1, DPDFBlock, [256]]  # 3-P3/8
+  - [-1, 6, AIRBlock, [256]]   # 4
+  - [-1, 1, DPDFBlock, [512]]  # 5-P4/16
+  - [-1, 6, AIRBlock, [512]]   # 6
+  - [-1, 1, DPDFBlock, [1024]] # 7-P5/32
+  - [-1, 3, AIRBlock, [1024]]  # 8
+  - [-1, 1, SPPF, [1024, 5]]   # 9
+
+# Head with upsample, concat, AIRBlock + DPDFBlock
+head:
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]   # 10
+  - [[-1, 6], 1, Concat, [1]]                    # 11
+  - [-1, 3, AIRBlock, [512]]                     # 12
+
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]   # 13
+  - [[-1, 4], 1, Concat, [1]]                    # 14
+  - [-1, 3, AIRBlock, [256]]                     # 15 (P3/8-small)
+
+  - [-1, 1, DPDFBlock, [256]]                    # 16
+  - [[-1, 12], 1, Concat, [1]]                   # 17
+  - [-1, 3, AIRBlock, [512]]                     # 18 (P4/16-medium)
+
+  - [-1, 1, DPDFBlock, [512]]                    # 19
+  - [[-1, 9], 1, Concat, [1]]                    # 20
+  - [-1, 3, AIRBlock, [1024]]                    # 21 (P5/32-large)
+
+  - [[15, 18, 21], 1, Detect, [nc]]              # Detect(P3, P4, P5)
