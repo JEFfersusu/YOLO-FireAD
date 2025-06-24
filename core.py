@@ -101,7 +101,7 @@ class AIRBlock(nn.Module):
 
 class DPDFBlock(nn.Module):
     def __init__(self, in_channels, out_channels, k=1, s=1, p=None, g=1, d=1, act=True):
-        super(EAP, self).__init__()
+        super(DPDFBlock, self).__init__()
         self.dw_cbr = DWCBR(in_channels, out_channels)
         self.max_pool = nn.MaxPool2d(kernel_size=2, stride=2)
         self.avg_pool = nn.AvgPool2d(kernel_size=2, stride=2)
