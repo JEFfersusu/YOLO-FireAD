@@ -1,7 +1,7 @@
 # YOLO-FireAD
 YOLO-FireAD: Efficient Fire Detection via Attention-Guided Inverted Residual Learning and Dual-Pooling Feature Preservation.
 
-This study is accepted by the 2025 International Conference on Intelligent Computing.
+This study is accepted by the 2025 International Conference on Intelligent Computing (ICIC).
 
 The paper is freely available at: https://arxiv.org/abs/2505.20884.
 
