@@ -48,7 +48,7 @@ class DWCBR(nn.Module):
 
 class AIRBlock(nn.Module):
 
-    def __init__(self, in_channels, c2, n=1, shortcut=False, g=1, e=0.5):
+    def __init__(self, in_channels, out_c, n=1, shortcut=False, g=1, e=0.5):
         super().__init__()
         out_c = in_channels // 2 
 
